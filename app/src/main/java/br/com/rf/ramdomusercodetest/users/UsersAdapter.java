@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.rf.ramdomusercodetest.R;
@@ -27,9 +29,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     private List<User> users;
     private UserItemListener mItemListener;
+    private ProgressBar mProgressBar;
 
     public UsersAdapter(List<User> users, UserItemListener itemListener) {
-        this.users = users;
+        this.users = new ArrayList<>(users);
         this.mItemListener = itemListener;
     }
 
@@ -49,9 +52,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         holder.mTextEmail.setText(user.getEmail());
         holder.mTextPhone.setText(user.getPhone());
 
-        if (user.getPicture() != null && !TextUtils.isEmpty(user.getPicture().getThumbnail())) {
+        if (user.getPicture() != null && !TextUtils.isEmpty(user.getPicture().getMedium())) {
             Glide.with(context)
-                    .load(user.getPicture().getThumbnail())
+                    .load(user.getPicture().getMedium())
                     .dontAnimate()
                     .into(holder.mImgUser);
         }
@@ -113,15 +116,30 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         notifyItemRangeInserted(count, items.size());
     }
 
+    public void removeAnItem(int position) {
+        users.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public void clear() {
         users.clear();
+    }
+
+    public void replaceContent(List<User> users) {
+        clear();
+        this.users = users;
+        notifyDataSetChanged();
+    }
+
+    public void showLoading() {
+
     }
 
     public interface UserItemListener {
 
         void onUserImageClick(User clickedUser);
 
-        void onDelteClick(User DeletedUser);
+        void onDelteClick(User deletedUser);
 
     }
 }

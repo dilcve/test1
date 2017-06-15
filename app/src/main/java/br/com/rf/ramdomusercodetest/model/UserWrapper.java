@@ -1,7 +1,8 @@
 package br.com.rf.ramdomusercodetest.model;
 
-import android.support.annotation.NonNull;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -11,12 +12,33 @@ import java.util.TreeSet;
 
 public class UserWrapper {
 
-   public TreeSet<User> results;
+    private static String TAG = UserWrapper.class.getSimpleName();
+
+    public TreeSet<User> results;
+
+    public List<User> getNoDeletedUsers() {
+        return getNoDeletedUsers(results);
+    }
+
+    public static List<User> getNoDeletedUsers(TreeSet<User> users) {
+        List<User> activeUsers = new ArrayList<>();
+        for (User user : users) {
+            if (!user.getDeleted()) {
+                activeUsers.add(user);
+            }
+        }
+        Log.d(TAG, "users: " + users.size());
+        return activeUsers;
+    }
 
     public UserWrapper() {
     }
 
     public UserWrapper(TreeSet<User> users) {
-        this.results = users;
+        this.results = new TreeSet<>(users);
+    }
+
+    public UserWrapper(List<User> users) {
+        this.results = new TreeSet<>(users);
     }
 }

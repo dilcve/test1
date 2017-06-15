@@ -49,6 +49,12 @@ public class UsersRepository implements UsersDataSource {
     @Override
     public void getUsers(@NonNull final LoadUsersCallback callback) {
         checkNotNull(callback);
+        getUsersFromLocalDataSource(callback);
+    }
+
+    @Override
+    public void getMoreUsers(@NonNull LoadUsersCallback callback) {
+        checkNotNull(callback);
         getUsersFromRemoteDataSource(callback);
     }
 
@@ -68,8 +74,8 @@ public class UsersRepository implements UsersDataSource {
     }
 
     @Override
-    public void deleteUser(@NonNull User user, @NonNull TreeSet<User> allUsers) {
-        mUsersLocalDataSource.deleteUser(user, allUsers);
+    public void deleteUser(@NonNull User user) {
+        mUsersLocalDataSource.deleteUser(user);
     }
 
     private void getUsersFromRemoteDataSource(@NonNull final LoadUsersCallback callback) {
@@ -82,7 +88,7 @@ public class UsersRepository implements UsersDataSource {
 
             @Override
             public void onDataNotAvailable() {
-                getUsersFromLocalDataSource(callback);
+                callback.onDataNotAvailable();
             }
         });
     }
@@ -96,7 +102,7 @@ public class UsersRepository implements UsersDataSource {
 
             @Override
             public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
+                getUsersFromRemoteDataSource(callback);
             }
         });
     }

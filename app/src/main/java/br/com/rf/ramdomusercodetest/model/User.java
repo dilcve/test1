@@ -2,12 +2,15 @@ package br.com.rf.ramdomusercodetest.model;
 
 import android.support.annotation.NonNull;
 
+import com.google.common.base.Objects;
+
+import java.io.Serializable;
+
 /**
  * Created by rodrigoferreira on 11/06/2017.
  */
 
-public class User implements Comparable<User> {
-
+public class User implements Comparable<User>, Serializable {
 
     private String gender;
     private Name name;
@@ -17,6 +20,15 @@ public class User implements Comparable<User> {
     private String phone;
     private String cell;
     private Picture picture;
+    private boolean deleted = false;
+
+    public void setDeleted() {
+        deleted = true;
+    }
+
+    public boolean getDeleted() {
+        return deleted;
+    }
 
     public String getGender() {
         return this.gender;
@@ -38,6 +50,13 @@ public class User implements Comparable<User> {
         this.name = name;
     }
 
+    public String getFullAddress() {
+        String fullAddress = "";
+        if (this.location != null) {
+            fullAddress = location.getStreet() + " - " + location.getCity() + " - " + location.getState();
+        }
+        return fullAddress;
+    }
 
     public Location getLocation() {
         return this.location;
@@ -87,7 +106,7 @@ public class User implements Comparable<User> {
         this.picture = picture;
     }
 
-    public class Name {
+    public class Name implements Serializable {
         private String first;
 
         public String getFirst() {
@@ -109,7 +128,7 @@ public class User implements Comparable<User> {
         }
     }
 
-    public class Location {
+    public class Location implements Serializable {
         private String street;
 
         public String getStreet() {
@@ -139,19 +158,9 @@ public class User implements Comparable<User> {
         public void setState(String state) {
             this.state = state;
         }
-
-//        private int postcode;
-//
-//        public int getPostcode() {
-//            return this.postcode;
-//        }
-//
-//        public void setPostcode(int postcode) {
-//            this.postcode = postcode;
-//        }
     }
 
-    public class Picture {
+    public class Picture implements Serializable {
         private String large;
 
         public String getLarge() {
@@ -186,5 +195,18 @@ public class User implements Comparable<User> {
     @Override
     public int compareTo(@NonNull User user) {
         return this.getFullname().compareTo(user.getFullname());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return Objects.equal(name.first, user.name.first) &&
+                Objects.equal(name.last, user.name.last) &&
+                Objects.equal(email, user.email) &&
+                Objects.equal(phone, user.phone);
     }
 }

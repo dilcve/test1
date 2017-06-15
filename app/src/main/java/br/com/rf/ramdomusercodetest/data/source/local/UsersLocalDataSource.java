@@ -35,9 +35,6 @@ import br.com.rf.ramdomusercodetest.model.UserWrapper;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-/**
- * Concrete implementation of a data source as a db.
- */
 public class UsersLocalDataSource implements UsersDataSource {
 
     private static UsersLocalDataSource INSTANCE;
@@ -96,8 +93,51 @@ public class UsersLocalDataSource implements UsersDataSource {
     }
 
     @Override
+    public void getMoreUsers(@NonNull LoadUsersCallback callback) {
+        //nothing to do on local
+    }
+
+    private UserWrapper getUsers() {
+        UserWrapper userWrapper = new UserWrapper();
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                UserEntry.COLUMN_NAME_ENTRY_ID,
+                UserEntry.COLUMN_NAME_JSON,
+
+        };
+
+        Cursor c = db.query(
+                UserEntry.TABLE_NAME, projection, null, null, null, null, null);
+
+        if (c != null && c.getCount() > 0) {
+            while (c.moveToNext()) {
+                String itemId = c.getString(c.getColumnIndexOrThrow(UserEntry.COLUMN_NAME_ENTRY_ID));
+                String json = c.getString(c.getColumnIndexOrThrow(UserEntry.COLUMN_NAME_JSON));
+
+                userWrapper = new Gson().fromJson(json, UserWrapper.class);
+            }
+        }
+        if (c != null) {
+            c.close();
+        }
+
+        db.close();
+
+        return userWrapper;
+    }
+
+    @Override
     public void saveUsers(@NonNull UserWrapper userWrapper) {
         checkNotNull(userWrapper);
+
+        UserWrapper localUsers = getUsers();
+        deleteAllUsers();
+
+        if (localUsers != null && localUsers.results != null && localUsers.results.size() > 0) {
+            userWrapper.results.addAll(localUsers.results);
+        }
+
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -125,16 +165,19 @@ public class UsersLocalDataSource implements UsersDataSource {
     }
 
     @Override
-    public void deleteUser(@NonNull User user, @NonNull TreeSet<User> allUsers) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    public void deleteUser(@NonNull User user) {
 
-        UserWrapper userWrapper = new UserWrapper(allUsers);
+        UserWrapper localUsers = getUsers();
 
-        db.delete(UserEntry.TABLE_NAME, null, null);
+        if (localUsers != null && localUsers.results != null && localUsers.results.size() > 0) {
+            for (User currUser : localUsers.results) {
+                if (currUser.equals(user)) {
+                    currUser.setDeleted();
+                    saveUsers(localUsers);
+                    return;
+                }
+            }
 
-        db.close();
-
-        saveUsers(userWrapper);
-
+        }
     }
 }

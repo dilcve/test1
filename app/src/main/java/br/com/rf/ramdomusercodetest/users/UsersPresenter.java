@@ -1,7 +1,10 @@
 package br.com.rf.ramdomusercodetest.users;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 import br.com.rf.ramdomusercodetest.data.source.UsersDataSource;
@@ -40,6 +43,23 @@ public class UsersPresenter implements UsersContract.Presenter {
         mFirstLoad = false;
     }
 
+    @Override
+    public void loadMoreUsers() {
+        mUsersRepository.getMoreUsers(new UsersDataSource.LoadUsersCallback() {
+            @Override
+            public void onUsersLoaded(TreeSet<User> users) {
+
+                mUsersView.showMoreUsers(users);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+                mUsersView.showLoadingMoreUsersError();
+            }
+        });
+    }
+
     private void loadUsers(final boolean showLoadingUI) {
         if (showLoadingUI) {
             mUsersView.setLoadingIndicator(true);
@@ -52,7 +72,6 @@ public class UsersPresenter implements UsersContract.Presenter {
                 if (showLoadingUI) {
                     mUsersView.setLoadingIndicator(false);
                 }
-
                 mUsersView.showUsers(users);
             }
 
@@ -71,11 +90,34 @@ public class UsersPresenter implements UsersContract.Presenter {
 
     @Override
     public void deleteUser(@NonNull User user) {
-        mUsersView.showDeleteUserComplete();
+        mUsersRepository.deleteUser(user);
+        mUsersView.showDeleteUserComplete(user);
     }
 
     @Override
-    public void setFiltering(String arg) {
+    public void setFiltering(String filter, List<User> users) {
+        List<User> filteredList = new ArrayList<>();
+        for (User user : users) {
+            if (!TextUtils.isEmpty(user.getFullname()) && user.getFullname().toLowerCase().contains(filter.toLowerCase())
+                    || !TextUtils.isEmpty(user.getEmail()) && user.getEmail().toLowerCase().contains(filter.toLowerCase())) {
+                filteredList.add(user);
+            }
+        }
 
+        if (filteredList.size() > 0) {
+            mUsersView.showFilteredResults(filteredList);
+        } else {
+            mUsersView.showFilterNoResult();
+        }
+    }
+
+    @Override
+    public void showFilter() {
+        mUsersView.showFilter();
+    }
+
+    @Override
+    public void hideFilter() {
+        mUsersView.hideFilter();
     }
 }

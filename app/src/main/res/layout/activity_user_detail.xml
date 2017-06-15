@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_detail_img"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_below="@id/appbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/default_margin"
+        app:civ_border_color="@android:color/darker_gray"
+        app:civ_border_width="1.5dp"
+        tools:src="#ccc" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_detail_img"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/user_detail_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            tools:text="Name: Rodrigo Ferreira" />
+
+        <TextView
+            android:id="@+id/user_detail_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Gender: Male" />
+
+        <TextView
+            android:id="@+id/user_detail_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Email: dilcve@gmail.com" />
+
+        <TextView
+            android:id="@+id/user_detail_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Phone: 353 085 1530863" />
+
+        <TextView
+            android:id="@+id/user_detail_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Address: 4 stafford house - leader park" />
+
+        <TextView
+            android:id="@+id/user_detail_registred_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/list_item_margin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="Registred: 12/02/2017" />
+
+    </LinearLayout>
+
+</RelativeLayout>

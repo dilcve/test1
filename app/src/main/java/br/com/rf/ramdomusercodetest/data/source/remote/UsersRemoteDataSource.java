@@ -80,6 +80,11 @@ public class UsersRemoteDataSource implements UsersDataSource {
     }
 
     @Override
+    public void getMoreUsers(@NonNull LoadUsersCallback callback) {
+        getUsers(callback);
+    }
+
+    @Override
     public void saveUsers(@NonNull UserWrapper userWrapper) {
         //nothing to do on remote
     }
@@ -95,7 +100,7 @@ public class UsersRemoteDataSource implements UsersDataSource {
     }
 
     @Override
-    public void deleteUser(@NonNull User user, @NonNull TreeSet<User> allUsers) {
+    public void deleteUser(@NonNull User user) {
         //nothing to do on remote
 
     }

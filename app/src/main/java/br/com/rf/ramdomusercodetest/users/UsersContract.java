@@ -24,13 +24,23 @@ public interface UsersContract {
 
         void showUsers(TreeSet<User> users);
 
+        void showMoreUsers(TreeSet<User> users);
+
         void showUserDetailsUi(User user);
 
-        void showDeleteUserComplete();
+        void showDeleteUserComplete(User user);
 
         void showLoadingUsersError();
 
-        void showUsersFilter(String arg);
+        void showLoadingMoreUsersError();
+
+        void showFilter();
+
+        void showFilterNoResult();
+
+        void hideFilter();
+
+        void showFilteredResults(List<User> users);
 
     }
 
@@ -38,11 +48,18 @@ public interface UsersContract {
 
         void loadUsers();
 
+        void loadMoreUsers();
+
         void openUserDetails(@NonNull User user);
 
         void deleteUser(@NonNull User user);
 
-        void setFiltering(String arg);
+        void setFiltering(String arg, List<User> users);
+
+        void showFilter();
+
+        void hideFilter();
+
 
     }
 }

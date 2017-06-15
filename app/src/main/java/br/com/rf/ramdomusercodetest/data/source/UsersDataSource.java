@@ -19,7 +19,11 @@ public interface UsersDataSource {
 
     void deleteAllUsers();
 
-    void deleteUser(@NonNull User user, @NonNull TreeSet<User> allUsers);
+    void getUsers(@NonNull LoadUsersCallback callback);
+
+    void getMoreUsers(@NonNull LoadUsersCallback callback);
+
+    void deleteUser(@NonNull User user);
 
     interface LoadUsersCallback {
 
@@ -28,6 +32,6 @@ public interface UsersDataSource {
         void onDataNotAvailable();
     }
 
-    void getUsers(@NonNull LoadUsersCallback callback);
+
 
 }
