@@ -70,7 +70,7 @@ public class UserDetailActivity extends AppCompatActivity implements UserDetailC
     public void showUserDetails(@NonNull User user) {
 
         mTextName.setText(getString(R.string.lbl_name, user.getFullname()));
-        mTextGender.setText(getString(R.string.lbl_genger, user.getGender()));
+        mTextGender.setText(getString(R.string.lbl_genger, user.getGender().toUpperCase()));
         mTextEmail.setText(getString(R.string.lbl_email, user.getEmail()));
         mTextPhone.setText(getString(R.string.lbl_phone, user.getPhone()));
         mTextAddress.setText(getString(R.string.lbl_address, user.getFullAddress()));

@@ -22,6 +22,22 @@ public class User implements Comparable<User>, Serializable {
     private Picture picture;
     private boolean deleted = false;
 
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email, String phone) {
+        this.name = new Name(firstName, lastName);
+        this.email = email;
+        this.phone = phone;
+    }
+
+    public User(String firstName, String lastName, String email, String phone, boolean deleted) {
+        this.name = new Name(firstName, lastName);
+        this.email = email;
+        this.phone = phone;
+        this.deleted = deleted;
+    }
+
     public void setDeleted() {
         deleted = true;
     }
@@ -108,6 +124,14 @@ public class User implements Comparable<User>, Serializable {
 
     public class Name implements Serializable {
         private String first;
+
+        public Name() {
+        }
+
+        public Name(String first, String last) {
+            this.first = first;
+            this.last = last;
+        }
 
         public String getFirst() {
             return this.first;
@@ -209,4 +233,5 @@ public class User implements Comparable<User>, Serializable {
                 Objects.equal(email, user.email) &&
                 Objects.equal(phone, user.phone);
     }
+
 }

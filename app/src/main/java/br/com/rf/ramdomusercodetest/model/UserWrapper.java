@@ -27,7 +27,6 @@ public class UserWrapper {
                 activeUsers.add(user);
             }
         }
-        Log.d(TAG, "users: " + users.size());
         return activeUsers;
     }
 

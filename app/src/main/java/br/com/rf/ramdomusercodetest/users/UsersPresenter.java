@@ -96,19 +96,24 @@ public class UsersPresenter implements UsersContract.Presenter {
 
     @Override
     public void setFiltering(String filter, List<User> users) {
-        List<User> filteredList = new ArrayList<>();
-        for (User user : users) {
-            if (!TextUtils.isEmpty(user.getFullname()) && user.getFullname().toLowerCase().contains(filter.toLowerCase())
-                    || !TextUtils.isEmpty(user.getEmail()) && user.getEmail().toLowerCase().contains(filter.toLowerCase())) {
-                filteredList.add(user);
-            }
-        }
+        List<User> filteredList = getFilteredUsers(filter, users);
 
         if (filteredList.size() > 0) {
             mUsersView.showFilteredResults(filteredList);
         } else {
             mUsersView.showFilterNoResult();
         }
+    }
+
+    public static List<User> getFilteredUsers(String filter, List<User> users) {
+        List<User> filteredList = new ArrayList<>();
+        for (User user : users) {
+            if (user.getFullname() != null && user.getFullname().length() > 0 && user.getFullname().toLowerCase().contains(filter.toLowerCase())
+                    || user.getEmail() != null && user.getEmail().length() > 0 && user.getEmail().toLowerCase().contains(filter.toLowerCase())) {
+                filteredList.add(user);
+            }
+        }
+        return filteredList;
     }
 
     @Override

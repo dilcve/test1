@@ -66,6 +66,7 @@
             android:layout_marginBottom="@dimen/list_item_margin"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:autoLink="email"
             tools:text="Email: dilcve@gmail.com" />
 
         <TextView
@@ -75,6 +76,7 @@
             android:layout_marginBottom="@dimen/list_item_margin"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:autoLink="phone"
             tools:text="Phone: 353 085 1530863" />
 
         <TextView
